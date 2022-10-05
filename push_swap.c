@@ -1,22 +1,27 @@
 #include "header.h"
 
-int main(int argc, char **argv)
+int main()
 {
-	t_list *first, *sec, *third, *forth, *curr;
-	t_data data;
-	first->data = 1;
-	first->next = sec;
-	sec->data = 2;
-	sec->next = third;
-	third->data = 3;
-	third->next = forth;
-	forth->data = 4;
-	forth->next = NULL;
-	curr = first;
-	while(curr->next)
+	t_list *head, *one, *two, *three;
+	t_data *a;
+	a = malloc(sizeof(t_data));
+	one = malloc(sizeof(t_list));
+	two = malloc(sizeof(t_list));
+	three = malloc(sizeof(t_list));
+	one->data = 1;
+	one->next = two;
+	two->data = 2;
+	two->next = three;
+	three->data = 3;
+	three->next = NULL;
+	head = one;
+	a->a = head;
+	// push_b(a);
+	while(head)
 	{
-		printf("%ld", curr->data);
-		curr = curr->next;
+		printf("%ld\n", head->data);
+		head = head->next;
 	}
+
 	return 0;
 }

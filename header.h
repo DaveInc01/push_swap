@@ -16,7 +16,7 @@ typedef struct s_data {
 
 }				t_data;
 
-void	ft_lstadd_front(t_data **lst, t_list *new);
+void	ft_lstadd_front(t_list **lst, t_list *new);
 void 	swap_a(t_data *list, int flag);
 void 	swap_b(t_data *list, int flag);
 void	swap_ss (t_data *list);
