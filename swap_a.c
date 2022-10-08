@@ -29,18 +29,40 @@ void push_a(t_data *list)
 		list->a = tmp;
 }
 
-void rotate_a(t_data *list)
+void rotate_a(t_data *list, int flag)
+{
+	t_list *first;
+	t_list *tmp;
+
+	first = list->a;
+	tmp = list->a;
+	if (!first->next)
+		return ;
+	while (tmp->next->next)
+		tmp = tmp->next;
+	tmp->next->next = first;
+	list->a = tmp->next;
+	tmp->next = NULL;
+	if(flag == 1)
+		write(1, "ra\n", 3);
+}
+
+void rrotate_a(t_data *list, int flag)
 {
 	t_list *first;
 	t_list *last;
+	t_list *tmp;
+
 	first = list->a;
-
-	while (list->a->next->next)
-		list->a = list->a->next;
-	last = list->a->next;
-
-	list->a->next = first;
-	last->next = first->next;
-	first->next = NULL;
-	write(1, "ra\n", 3);
+	tmp = list->a;
+	last = NULL;
+	if (!(first->next))
+		;
+	while (tmp->next->next)
+		tmp = tmp->next;
+	tmp->next = last;
+	last->next = first;
+	tmp->next = NULL;
+	if (flag == 1)
+		write (1, "rra\n", 4);
 }

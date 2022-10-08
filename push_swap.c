@@ -1,10 +1,31 @@
 #include "header.h"
 
+void	ft_lstadd_front(t_list **lst, t_list *new)
+{
+	new->next = *lst;
+	*lst = new;
+}
+
+
+void push_b(t_data *list)
+{
+	t_list *tmp;
+
+	tmp = list->a;
+	if(list->a->next)
+		list->a = list->a->next;
+	tmp->next = NULL;
+	if(list->b)
+		ft_lstadd_front(&list->b, tmp);
+	else
+		list->b = tmp;
+}
+
 int main()
 {
-	t_list *head, *one, *two, *three;
-	t_data *a;
-	a = malloc(sizeof(t_data));
+	t_list *head, *one, *two, *three, *tmp;
+	t_data *stack;
+	stack = malloc(sizeof(t_data));
 	one = malloc(sizeof(t_list));
 	two = malloc(sizeof(t_list));
 	three = malloc(sizeof(t_list));
@@ -15,13 +36,13 @@ int main()
 	three->data = 3;
 	three->next = NULL;
 	head = one;
-	a->a = head;
-	// push_b(a);
-	while(head)
+	stack->a = head;
+	push_b(stack);
+	tmp = stack->b;
+	while(tmp)
 	{
-		printf("%ld\n", head->data);
-		head = head->next;
+		printf("%ld\n", tmp->data);
+		tmp = tmp->next;
 	}
-
 	return 0;
 }
