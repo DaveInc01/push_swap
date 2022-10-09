@@ -16,7 +16,20 @@ void swap_b(t_data *list, int flag)
 		write(1, "sb\n", 3);
 }
 
+void push_b(t_data *list)
+{
+	t_list *tmp;
 
+	tmp = list->a;
+	if(list->a->next)
+		list->a = list->a->next;
+	tmp->next = NULL;
+	if(list->b)
+		ft_lstadd_front(&list->b, tmp);
+	else
+		list->b = tmp;
+	// check this case when b stack is empty unexpecing seg fault!
+}
 
 void rotate_b(t_data *list, int flag)
 {
@@ -47,13 +60,13 @@ void rrotate_b(t_data *list, int flag)
 	tmp = list->b;
 	last = NULL;
 	if (!(first->next))
-		;
+		return ;
 	while (tmp->next->next)
 		tmp = tmp->next;
-	tmp->next = last;
+	last = tmp->next;
 	last->next = first;
+	list->b = last;
 	tmp->next = NULL;
 	if (flag == 1)
 		write (1, "rrb\n", 4);
 }
-

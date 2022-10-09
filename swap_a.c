@@ -1,5 +1,6 @@
 #include "header.h"
 
+
 void swap_a(t_data *list, int flag)
 {
 	t_list *tmp;
@@ -57,11 +58,12 @@ void rrotate_a(t_data *list, int flag)
 	tmp = list->a;
 	last = NULL;
 	if (!(first->next))
-		;
+		return ;
 	while (tmp->next->next)
 		tmp = tmp->next;
-	tmp->next = last;
+	last = tmp->next;
 	last->next = first;
+	list->a = last;
 	tmp->next = NULL;
 	if (flag == 1)
 		write (1, "rra\n", 4);
