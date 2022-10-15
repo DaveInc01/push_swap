@@ -1,5 +1,22 @@
 #include "header.h"
 
+void	ft_lstadd_back(t_list **lst, t_list *new)
+{
+	t_list	*iter;
+
+	if (!*lst && !new)
+		return ;
+	if (!*lst)
+	{
+		*lst = new;
+		return ;
+	}
+	iter = *lst;
+	while (iter->next != NULL)
+		iter = iter->next;
+	iter->next = new;
+}
+
 
 int	ft_atoi(const char *str)
 {
@@ -94,19 +111,23 @@ void fill_stack(t_data *list, char *elem, int *ordered_arr, int size)
 {
 	int	i;
 	int	num;
-	t_list e;
+	t_list *e;
 
-	list = NULL;
 	i = 0;
 	num = ft_atoi(elem);
+	i = 0;
 	while (i < size)
 	{
 		if (num == ordered_arr[i])
 		{
-			// printf("okkkkk\n");
 			e = malloc(sizeof(t_list));
-			e = list->a;
-			list->a = list->a->next;
+			e->data = i;
+			e->next = NULL;
+			// printf("%ld\n", e->data);
+			if (list->a)
+				ft_lstadd_back(&list->a, e);
+			else
+				list->a = e;
 			break;
 		}
 		i++;
@@ -123,13 +144,14 @@ int main(int argc, char **argv)
 	t_data	*list;
 
 	list = malloc(sizeof(t_data));
+	list->a = NULL;
+	list->b = NULL;
+	// list = NULL;
 	if (argc >= 2)
 	{
-
 		i = 1;
 		stack_size = argc - 1;
 		unordered = malloc(sizeof(int) * (stack_size));
-		printf("stacksize = %d\n", stack_size);
 		if (!unordered)
 			return (0);
 		while (argv[i])
@@ -155,16 +177,16 @@ int main(int argc, char **argv)
 		ordered = order_arr(unordered, stack_size);
 		free(unordered);
 		i = 1;
-		while (argv[i])
+		while (i < argc)
 		{
 			fill_stack(list, argv[i], ordered, stack_size);
 			i++;
 		}
-		// while(i < stack_size)
-		// {
-		// 	printf("%d\n", ordered[i]);
-		// 	i++;
-		// }
+		while(list->a)
+		{
+			printf("%ld\n", list->a->data);
+			list->a = list->a->next;
+		}
 	}
 	return 0;
 }

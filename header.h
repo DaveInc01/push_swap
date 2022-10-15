@@ -29,5 +29,6 @@ void 	rotate_all (t_data *list);
 void 	rrotate_a (t_data *list, int flag);
 void 	rrotate_b (t_data *list, int flag);
 void 	rrotate_all (t_data *list);
+void	ft_lstadd_back(t_list **lst, t_list *new);
 
 # endif
