@@ -22,31 +22,19 @@ void push_a(t_data *list)
 	t_list *tmp;
 
 	tmp = list->b;
-	list->b = list->b->next;
+	if(list->b->next)
+		list->b = list->b->next;
+	else
+		list->b = NULL;
 	tmp->next = NULL;
 	if(list->a)
 		ft_lstadd_front(&list->a, tmp);
 	else
 		list->a = tmp;
+	// check this case when b stack is empty unexpecing seg fault!
 }
 
-void rotate_a(t_data *list, int flag)
-{
-	t_list *first;
-	t_list *tmp;
 
-	first = list->a;
-	tmp = list->a;
-	if (!first->next)
-		return ;
-	while (tmp->next->next)
-		tmp = tmp->next;
-	tmp->next->next = first;
-	list->a = tmp->next;
-	tmp->next = NULL;
-	if(flag == 1)
-		write(1, "ra\n", 3);
-}
 
 void rrotate_a(t_data *list, int flag)
 {

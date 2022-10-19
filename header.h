@@ -6,7 +6,7 @@
 #include <stdio.h>
 
 typedef struct s_list {
-	long int 		data;
+	int 			data;
 	struct s_list	*next;
 }			   t_list;
 
