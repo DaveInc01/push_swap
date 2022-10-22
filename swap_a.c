@@ -17,22 +17,7 @@ void swap_a(t_data *list, int flag)
 		write(1, "sa\n", 3);
 }
 
-void push_a(t_data *list)
-{
-	t_list *tmp;
 
-	tmp = list->b;
-	if(list->b->next)
-		list->b = list->b->next;
-	else
-		list->b = NULL;
-	tmp->next = NULL;
-	if(list->a)
-		ft_lstadd_front(&list->a, tmp);
-	else
-		list->a = tmp;
-	// check this case when b stack is empty unexpecing seg fault!
-}
 
 
 

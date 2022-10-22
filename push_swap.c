@@ -7,6 +7,63 @@ void	ft_lstadd_front(t_list **lst, t_list *new)
 }
 
 
+void rrotate_b(t_data *list, int flag)
+{
+	t_list *first;
+	t_list *last;
+	t_list *tmp;
+
+	first = list->b;
+	tmp = list->b;
+	last = NULL;
+	if (!(first->next))
+		return ;
+	while (tmp->next->next)
+		tmp = tmp->next;
+	last = tmp->next;
+	last->next = first;
+	list->b = last;
+	tmp->next = NULL;
+	if (flag == 1)
+		write (1, "rrb\n", 4);
+}
+
+
+void rotate_b(t_data *list, int flag)
+{
+	t_list *first, *tmp, *sec;
+
+	first = list->b;
+	tmp = list->b;
+	if (!first->next)
+		return ;
+	sec = first->next;
+	while (tmp->next->next)
+		tmp = tmp->next;
+	tmp->next->next = first;
+	list->b = sec;
+	first->next = NULL;
+	if(flag == 1)
+		write(1, "rb\n", 3);
+}
+
+void push_a(t_data *list)
+{
+	t_list *tmp;
+
+	tmp = list->b;
+	if(list->b->next)
+		list->b = list->b->next;
+	else
+		list->b = NULL;
+	tmp->next = NULL;
+	if(list->a)
+		ft_lstadd_front(&list->a, tmp);
+	else
+		list->a = tmp;
+	write(1, "pa\n", 3);
+}
+
 void rotate_a(t_data *list, int flag)
 {
 	t_list *first, *tmp, *sec;
@@ -21,7 +78,6 @@ void rotate_a(t_data *list, int flag)
 	tmp->next->next = first;
 	list->a = sec;
 	first->next = NULL;
-	// tmp->next = NULL;
 	if(flag == 1)
 		write(1, "ra\n", 3);
 }
@@ -40,6 +96,7 @@ void push_b(t_data *list)
 		ft_lstadd_front(&list->b, tmp);
 	else
 		list->b = tmp;
+	write(1, "pb\n", 3);
 	// check this case when b stack is empty unexpecing seg fault!
 }
 
@@ -61,10 +118,10 @@ void	ft_lstadd_back(t_list **lst, t_list *new)
 }
 
 
-int	ft_atoi(const char *str)
+long long int	ft_atoi(const char *str)
 {
-	int	m;
-	int	sum;
+	int				m;
+	long long int	sum;
 
 	sum = 0;
 	m = 1;
@@ -109,7 +166,7 @@ int is_dublicate(int num, int *arr, int arr_size)
 int pushing_to_arr(char *elem, int *unordered)
 {
 	static int i;
-	int num = ft_atoi(elem);
+	long long int num = ft_atoi(elem);
 	if (num >= 2147483647 || is_dublicate(num, unordered, i))
 		return (0);
 	unordered[i] = num;
@@ -130,9 +187,11 @@ int *order_arr(int *unordered, int size)
 {
 	int	i;
 	int flag;
+	int	steps;
 
 	i = 0;
 	flag = 0;
+	steps = 0;
 	--size;
 	while(i < size)
 	{
@@ -140,6 +199,7 @@ int *order_arr(int *unordered, int size)
 		{
 			flag = 1;
 			swap_arr(&unordered[i], &unordered[i + 1]);
+			steps++;
 		}
 		i++;
 		if(i == size && flag == 1)
@@ -148,6 +208,8 @@ int *order_arr(int *unordered, int size)
 			flag = 0;
 		}
 	}
+	if (steps == 0)
+		return (0);
 	return (unordered);
 }
 
@@ -186,7 +248,7 @@ int ft_list_max(t_list *stack)
 	if (stack)
 	{
 		max = stack;
-		while (stack->next)
+		while (stack)
 		{
 			if(stack->data > max->data)
 				max = stack;
@@ -205,6 +267,7 @@ int main(int argc, char **argv)
 	int		*unordered;
 	int		*ordered;
 	int		stack_size;
+	int		lst_max;
 	t_data	*list;
 	t_list	*tmp = NULL;
 
@@ -223,22 +286,29 @@ int main(int argc, char **argv)
 			j = 0;
 			while (argv[i][j])
 			{
+				if ((((j > 0) && argv[i][j] == '-')) || ((j > 0) && argv[i][j] == '+'))
+				{
+					write(1, "Error!\nArgument is not a correct number\n", 41);
+					return (0);
+				}
 				if((argv[i][j] >= '0' && argv[i][j] <= '9') || (argv[i][j] == '-') || (argv[i][j] == '+'))
 					j++;
 				else
 				{
-					write(1, "Error!\n Argument is not a number", 33);
+					write(1, "Error!\nArgument is not a correct number\n", 41);
 					return (0);
 				}
 			}
 			if(!(pushing_to_arr(argv[i], unordered)))
 			{
-				write(1, "Error\n", 7);
+				write(1, "Error\nSome arguments is dublicating or there are bigger than INT_MAX\n", 70);
 				return (0);
 			}
 			i++;
 		}
 		ordered = order_arr(unordered, stack_size);
+		if (!ordered)
+			return (0);
 		i = 0;
 		while (++i < argc)
 			fill_stack(list, argv[i], ordered, stack_size);
@@ -259,19 +329,28 @@ int main(int argc, char **argv)
 			else
 				rotate_a(list, 1);
 		}
-		// while(list->b)
-		// {
-		// 	ft_list_max(list->b);
-		// }
-		printf("max num = %d", ft_list_max(list->b));
-		// tmp = list->b;
-		// while(tmp)
-		// {
-		// 	printf("%d\t", tmp->data);
-		// 	tmp = tmp->next;
-		// }
-		// printf("\n");
+		while (list->b)
+		{
+			lst_max = ft_list_max(list->b);
+			if (lst_max == list->b->data)
+				push_a(list);
+			else
+			{
+				rrotate_b(list, 1);
+				push_a(list);
+			}
+		}
+		tmp = list->a;
+		printf("a stack is .\n");
+		while(tmp)
+		{
+			printf("%d\t", tmp->data);
+			tmp = tmp->next;
+		}
+		printf("\n");
 		free(unordered);
 	}
 	return 0;
 }
+
+// bash push_swap_tester/tester.sh $PWD 100 100
