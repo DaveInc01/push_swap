@@ -266,7 +266,6 @@ int main(int argc, char **argv)
 	int		j;
 	int		*unordered;
 	int		*ordered;
-	int		stack_size;
 	int		lst_max;
 	t_data	*list;
 	t_list	*tmp = NULL;
@@ -274,11 +273,11 @@ int main(int argc, char **argv)
 	list = malloc(sizeof(t_data));
 	list->a = NULL;
 	list->b = NULL;
+	printf("argcount = %d", argCount);
 	if (argc >= 2)
 	{
 		i = 1;
-		stack_size = argc - 1;
-		unordered = malloc(sizeof(int) * (stack_size));
+		unordered = malloc(sizeof(int) * (argCount));
 		if (!unordered)
 			return (0);
 		while (argv[i])
@@ -306,45 +305,50 @@ int main(int argc, char **argv)
 			}
 			i++;
 		}
-		ordered = order_arr(unordered, stack_size);
+		ordered = order_arr(unordered, argCount);
 		if (!ordered)
 			return (0);
 		i = 0;
 		while (++i < argc)
-			fill_stack(list, argv[i], ordered, stack_size);
+			fill_stack(list, argv[i], ordered, argCount);
 		int counter = 0;
-		while(list->a)
+		if (argCount >= 500)
 		{
-			if(list->a->data <= counter)
-			{
-				push_b(list);
-				rotate_b(list, 1);
-				counter++;
-			}
-			else if(list->a->data <= counter + 1)
-			{
-				push_b(list);
-				counter++;
-			}
-			else
-				rotate_a(list, 1);
+			butterfly(list, 30);
 		}
-		while (list->b)
-		{
-			lst_max = ft_list_max(list->b);
-			if (lst_max == list->b->data)
-				push_a(list);
-			else
-			{
-				rrotate_b(list, 1);
-				push_a(list);
-			}
-		}
-		tmp = list->a;
-		printf("a stack is .\n");
+		// while(list->a)
+		// {
+		// 	if(list->a->data <= counter)
+		// 	{
+		// 		push_b(list);
+		// 		rotate_b(list, 1);
+		// 		counter++;
+		// 	}
+		// 	else if(list->a->data <= counter + 1)
+		// 	{
+		// 		push_b(list);
+		// 		counter++;
+		// 	}
+		// 	else
+		// 		rotate_a(list, 1);
+		// }
+		// while (list->b)
+		// {
+		// 	lst_max = ft_list_max(list->b);
+		// 	if (lst_max == list->b->data)
+		// 		push_a(list);
+		// 	else
+		// 	{
+		// 		rrotate_b(list, 1);
+		// 		push_a(list);
+		// 	}
+		// }
+
+		tmp = list->b;
+		printf("b stack is .\n");
 		while(tmp)
 		{
-			printf("%d\t", tmp->data);
+			printf("%d\n", tmp->data);
 			tmp = tmp->next;
 		}
 		printf("\n");
