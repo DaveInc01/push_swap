@@ -33,6 +33,10 @@ void 			rrotate_b (t_data *list, int flag);
 void 			rrotate_all (t_data *list);
 void			ft_lstadd_back(t_list **lst, t_list *new);
 int				ft_list_max(t_list *stack);
-void			butterfly(t_data *list, int n);
+void			butterfly(t_data *list, int n, int arg_count);
+int				lst_order(t_list *list, int data);
+void			swap_3_elem(t_data *list);
+void			swap_4_elem(t_data *list);
+void			swap_5_elem(t_data *list);
 
 # endif

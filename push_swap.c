@@ -97,7 +97,6 @@ void push_b(t_data *list)
 	else
 		list->b = tmp;
 	write(1, "pb\n", 3);
-	// check this case when b stack is empty unexpecing seg fault!
 }
 
 void	ft_lstadd_back(t_list **lst, t_list *new)
@@ -273,7 +272,6 @@ int main(int argc, char **argv)
 	list = malloc(sizeof(t_data));
 	list->a = NULL;
 	list->b = NULL;
-	printf("argcount = %d", argCount);
 	if (argc >= 2)
 	{
 		i = 1;
@@ -312,46 +310,24 @@ int main(int argc, char **argv)
 		while (++i < argc)
 			fill_stack(list, argv[i], ordered, argCount);
 		int counter = 0;
-		if (argCount >= 500)
-		{
-			butterfly(list, 30);
-		}
-		// while(list->a)
+		if (argCount == 2)
+			swap_a (list, 1);
+		else if (argCount == 3)
+			swap_3_elem(list);
+		else if(argCount == 4)
+			swap_4_elem(list);
+		else if(argCount == 5)
+			swap_5_elem(list);
+		else if (argCount >= 100 && argCount < 500)
+			butterfly(list, 15, argCount);
+		else if (argCount >= 500)
+			butterfly(list, 30, argCount);
+		// tmp = list->a;
+		// while(tmp)
 		// {
-		// 	if(list->a->data <= counter)
-		// 	{
-		// 		push_b(list);
-		// 		rotate_b(list, 1);
-		// 		counter++;
-		// 	}
-		// 	else if(list->a->data <= counter + 1)
-		// 	{
-		// 		push_b(list);
-		// 		counter++;
-		// 	}
-		// 	else
-		// 		rotate_a(list, 1);
+		// 	printf("%d\n", tmp->data);
+		// 	tmp = tmp->next;
 		// }
-		// while (list->b)
-		// {
-		// 	lst_max = ft_list_max(list->b);
-		// 	if (lst_max == list->b->data)
-		// 		push_a(list);
-		// 	else
-		// 	{
-		// 		rrotate_b(list, 1);
-		// 		push_a(list);
-		// 	}
-		// }
-
-		tmp = list->b;
-		printf("b stack is .\n");
-		while(tmp)
-		{
-			printf("%d\n", tmp->data);
-			tmp = tmp->next;
-		}
-		printf("\n");
 		free(unordered);
 	}
 	return 0;

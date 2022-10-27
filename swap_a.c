@@ -17,10 +17,6 @@ void swap_a(t_data *list, int flag)
 		write(1, "sa\n", 3);
 }
 
-
-
-
-
 void rrotate_a(t_data *list, int flag)
 {
 	t_list *first;
